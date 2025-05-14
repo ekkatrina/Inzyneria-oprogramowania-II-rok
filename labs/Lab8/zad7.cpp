@@ -1,24 +1,30 @@
+//Agregacja
+
 class A {
 public:
-    void fA() {}
+	void fA() {}
 };
-
+	
 class B {
-    A* pa;
 public:
-    B(A* a) : pa(a) {}
-    void fB() {}
-};
+	void fB() {}
+private: 
+	A* pa;
+};	
 
-class Punkt {
-    // ...
-};
+main(){}
 
-class Kolo {
-    double dPromienKola;
-    Punkt SrodekKola;
+//Kompozycja
+
+class Punkt() {};
+
+class Kolo() {
+private:
+	double PromienKola;
+	Punkt SrodekKola;
 public:
-    void WstawSrodek() {
-        // ...
-    }
-};
+	void WstawSrodek() {}
+};	
+
+void main(){}
+	
