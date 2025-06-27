@@ -3,6 +3,7 @@ package services;
 import dao.UserDAO;
 import models.User;
 import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class AuthService {
     private static User currentUser;
@@ -18,7 +19,7 @@ public class AuthService {
     public static User login(String username, String password) {
         try {
             User user = UserDAO.findUserByUsername(username);
-            if (user == null || !user.getPassword().equals(password)) {
+            if (user == null || !BCrypt.checkpw(password, user.getPassword())) {
                 throw new RuntimeException("Nieprawidłowy login lub hasło");
             }
             return user;
@@ -32,7 +33,10 @@ public class AuthService {
             if (UserDAO.findUserByUsername(username) != null) {
                 throw new RuntimeException("Użytkownik już istnieje");
             }
-            User newUser = new User(username, password, "READER"); // Только читатели
+
+            String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+
+            User newUser = new User(username, hashed, "READER");
             UserDAO.addUser(newUser);
         } catch (SQLException e) {
             throw new RuntimeException("Błąd rejestracji");
